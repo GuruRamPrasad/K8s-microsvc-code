@@ -1,0 +1,124 @@
+image: docker:20.10.16
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+# include: './.gitlab-ci/.fetch-kube-cred.yml'
+
+# include:
+#   - local: '.gitlab-ci/.fetch-kube-cred.yml'
+
+# before_script:
+#   - echo "iam deploying here to dev"
+#   - cd admin-view 
+#   - kubectl version --short --client
+#   - helm version 
+#   - mkdir ~/.kube
+#   - echo "$kube_config" | base64 -d >~/.kube/config
+#   - apk add --no-cache curl jq python3 py3-pip
+#   - pip install awscli
+#   - kubectl get nodes 
+#   - kubectl get ns 
+#   - helm list
+
+.kube_config_creds: &kube_config_creds
+    - echo "iam deploying here to dev"
+    - cd admin-view 
+    - kubectl version --short --client
+    - helm version 
+    - mkdir ~/.kube
+    - echo "$kube_config" | base64 -d >~/.kube/config
+    - apk add --no-cache curl jq python3 py3-pip
+    - pip install awscli
+    - kubectl get nodes 
+    - kubectl get ns 
+    - helm list
+
+services:
+  - name: docker:19.03.0-dind
+    entrypoint: ["env", "-u", "DOCKER_HOST"]
+    command: ["dockerd-entrypoint.sh"]
+     
+stages:
+  - build
+  - dev-deploy 
+  - prod-deploy
+  - prod-dr-deploy
+
+admin-docker-build:
+  stage: build
+  script: 
+    - cd admin-view 
+    - ls -ltr 
+    - apk update 
+    - apk add --no-cache curl jq python3 py3-pip
+    - pip install awscli
+    # - export $AWS_ACCESS_KEY 
+    # - export $AWS_SECRET_ACCESS_KEY
+    - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 315073111691.dkr.ecr.us-east-1.amazonaws.com
+    - docker build -t 315073111691.dkr.ecr.us-east-1.amazonaws.com/k8s-admin-view .
+    - docker push  315073111691.dkr.ecr.us-east-1.amazonaws.com/k8s-admin-view
+  when: manual
+  tags: 
+    - k8s 
+
+end-user-docker-build:
+  stage: build
+  script: 
+    - cd end-user-view
+    - ls -ltr 
+    - apk update 
+    - apk add --no-cache curl jq python3 py3-pip
+    - pip install awscli
+    # - export $AWS_ACCESS_KEY 
+    # - export $AWS_SECRET_ACCESS_KEY
+    - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 315073111691.dkr.ecr.us-east-1.amazonaws.com
+    - docker build -t 315073111691.dkr.ecr.us-east-1.amazonaws.com/k8s-end-user-view .
+    - docker push  315073111691.dkr.ecr.us-east-1.amazonaws.com/k8s-end-user-view
+  when: manual
+  tags: 
+    - k8s 
+
+sqs-consumer-docker-build:
+  stage: build
+  script: 
+    - cd sqs-consumer
+    - ls -ltr 
+    - apk update 
+    - apk add --no-cache curl jq python3 py3-pip
+    - pip install awscli
+    # - export $AWS_ACCESS_KEY 
+    # - export $AWS_SECRET_ACCESS_KEY
+    - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 315073111691.dkr.ecr.us-east-1.amazonaws.com
+    - docker build -t 315073111691.dkr.ecr.us-east-1.amazonaws.com/k8s-sqs-consumer .
+    - docker push  315073111691.dkr.ecr.us-east-1.amazonaws.com/k8s-sqs-consumer
+  when: manual
+  tags: 
+    - k8s 
+
+dev-helm-deploy:
+  image: dtzar/helm-kubectl:3.9.3
+  stage: dev-deploy
+  script: 
+  # <<: *kube_config_creds
+    - kubectl version --short --client
+    - helm version 
+    - mkdir ~/.kube
+    - echo "$kube_config" | base64 -d >~/.kube/config
+    - apk add --no-cache curl jq python3 py3-pip
+    - pip install awscli
+    - kubectl get nodes 
+    - kubectl get ns 
+    - helm list
+    - helm upgrade --install admin-view ./helm/admin-view -n admin
+    - helm upgrade --install end-user-view ./helm/end-user-view -n frontend
+    - helm upgrade --install sqs-consumer ./helm/sqs-consumer -n backend
+  when: manual 
+  tags: 
+    - k8s 
+
+
+
+
