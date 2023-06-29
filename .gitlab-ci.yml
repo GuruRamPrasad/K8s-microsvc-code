@@ -112,9 +112,9 @@ dev-helm-deploy:
     - kubectl get nodes 
     - kubectl get ns 
     - helm list
-    - helm upgrade --install admin-view ./helm/admin-view -n admin
-    - helm upgrade --install end-user-view ./helm/end-user-view -n frontend
-    - helm upgrade --install sqs-consumer ./helm/sqs-consumer -n backend
+    - helm upgrade --install admin-view ./helm/admin-view -n admin-view
+    - helm upgrade --install end-user-view ./helm/end-user-view -n enduser-view
+    - helm upgrade --install sqs-consumer ./helm/sqs-consumer -n consumer-view
   when: manual 
   tags: 
     - k8s 
