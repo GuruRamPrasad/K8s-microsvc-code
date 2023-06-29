@@ -57,10 +57,10 @@ admin-docker-build:
     - pip install awscli
     # - export $AWS_ACCESS_KEY 
     # - export $AWS_SECRET_ACCESS_KEY
-    - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 315073111691.dkr.ecr.us-east-1.amazonaws.com
-    - docker build -t 315073111691.dkr.ecr.us-east-1.amazonaws.com/k8s-admin-view .
-    - docker push  315073111691.dkr.ecr.us-east-1.amazonaws.com/k8s-admin-view
-  when: manual
+    - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 885234883381.dkr.ecr.ap-south-1.amazonaws.com
+    - docker build -t 885234883381.dkr.ecr.ap-south-1.amazonaws.com/admin-view .
+    - docker push  885234883381.dkr.ecr.ap-south-1.amazonaws.com/admin-view
+  # when: manual
   tags: 
     - k8s 
 
@@ -98,26 +98,26 @@ sqs-consumer-docker-build:
   tags: 
     - k8s 
 
-dev-helm-deploy:
-  image: dtzar/helm-kubectl:3.9.3
-  stage: dev-deploy
-  script: 
-  # <<: *kube_config_creds
-    - kubectl version --short --client
-    - helm version 
-    - mkdir ~/.kube
-    - echo "$kube_config" | base64 -d >~/.kube/config
-    - apk add --no-cache curl jq python3 py3-pip
-    - pip install awscli
-    - kubectl get nodes 
-    - kubectl get ns 
-    - helm list
-    - helm upgrade --install admin-view ./helm/admin-view -n admin
-    - helm upgrade --install end-user-view ./helm/end-user-view -n frontend
-    - helm upgrade --install sqs-consumer ./helm/sqs-consumer -n backend
-  when: manual 
-  tags: 
-    - k8s 
+# dev-helm-deploy:
+#   image: dtzar/helm-kubectl:3.9.3
+#   stage: dev-deploy
+#   script: 
+#   # <<: *kube_config_creds
+#     - kubectl version --short --client
+#     - helm version 
+#     - mkdir ~/.kube
+#     - echo "$kube_config" | base64 -d >~/.kube/config
+#     - apk add --no-cache curl jq python3 py3-pip
+#     - pip install awscli
+#     - kubectl get nodes 
+#     - kubectl get ns 
+#     - helm list
+#     - helm upgrade --install admin-view ./helm/admin-view -n admin
+#     - helm upgrade --install end-user-view ./helm/end-user-view -n frontend
+#     - helm upgrade --install sqs-consumer ./helm/sqs-consumer -n backend
+#   when: manual 
+#   tags: 
+#     - k8s 
 
 
 
