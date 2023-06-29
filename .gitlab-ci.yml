@@ -91,9 +91,9 @@ sqs-consumer-docker-build:
     - pip install awscli
     # - export $AWS_ACCESS_KEY 
     # - export $AWS_SECRET_ACCESS_KEY
-    - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 315073111691.dkr.ecr.us-east-1.amazonaws.com
-    - docker build -t 315073111691.dkr.ecr.us-east-1.amazonaws.com/k8s-sqs-consumer .
-    - docker push  315073111691.dkr.ecr.us-east-1.amazonaws.com/k8s-sqs-consumer
+    - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 885234883381.dkr.ecr.ap-south-1.amazonaws.com
+    - docker build -t 885234883381.dkr.ecr.ap-south-1.amazonaws.com/sqs-consumer .
+    - docker push  885234883381.dkr.ecr.ap-south-1.amazonaws.com/sqs-consumer
   when: manual
   tags: 
     - k8s 
