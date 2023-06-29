@@ -94,7 +94,7 @@ sqs-consumer-docker-build:
     - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 885234883381.dkr.ecr.ap-south-1.amazonaws.com
     - docker build -t 885234883381.dkr.ecr.ap-south-1.amazonaws.com/sqs-consumer .
     - docker push  885234883381.dkr.ecr.ap-south-1.amazonaws.com/sqs-consumer
-  when: manual
+  # when: manual
   tags: 
     - k8s 
 
