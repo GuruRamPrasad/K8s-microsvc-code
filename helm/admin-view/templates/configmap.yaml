@@ -6,5 +6,5 @@ metadata:
   labels:
     {{- include "admin-view.labels" . | nindent 4 }}
 data:
-  AWS_REGION: {{ .Values.region | default "us-east-1" }}
-  QUEUE_URL: {{ .Values.sqs_queue_url | default "https://sqs.us-east-1.amazonaws.com/315073111691/admin-view" }}
+  AWS_REGION: {{ .Values.region | default "ap-south-1" }}
+  QUEUE_URL: {{ .Values.sqs_queue_url | default "https://sqs.ap-south-1.amazonaws.com/885234883381/admin-view" }}
