@@ -36,8 +36,8 @@ spec:
           envFrom:
           - configMapRef:
               name: admin-view
-          - secretRef:
-              name: admin-view
+          # - secretRef:
+          #     name: admin-view
           ports:
             - name: http
               containerPort: 5000
