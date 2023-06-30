@@ -1,9 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "admin-view.fullname" . }}
+  name: {{ include "sqs-consumer.fullname" . }}
   labels:
-    {{- include "admin-view.labels" . | nindent 4 }}
+    {{- include "sqs-consumer.labels" . | nindent 4 }}
   annotations:
     kubernetes.io/ingress.class: nginx
 spec:
