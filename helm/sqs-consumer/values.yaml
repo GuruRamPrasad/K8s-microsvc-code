@@ -8,7 +8,7 @@ image:
   repository: 885234883381.dkr.ecr.ap-south-1.amazonaws.com/sqs-consumer
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
