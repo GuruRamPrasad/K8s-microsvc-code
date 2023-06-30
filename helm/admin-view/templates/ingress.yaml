@@ -8,7 +8,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: dev-admin.guru.quest
+  - host: dev-admin.filmymoji.store
     http:
       paths:
       - pathType: Prefix
