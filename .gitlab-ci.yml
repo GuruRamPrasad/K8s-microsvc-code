@@ -136,7 +136,7 @@ dev-helm-deploy:
     - helm list
     # - helm upgrade --install admin-view ./helm/admin-view -n admin-view
     # - helm upgrade --install end-user-view ./helm/end-user-view -n enduser-view
-    - helm upgrade --install sqs-consumer ./helm/consumer-sqs -n sqs-consumer
+    - helm upgrade --install sqs-consumer ./helm/consumer-sqs -n consumer-sqs
   when: manual 
   tags: 
     - k8s 
