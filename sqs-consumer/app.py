@@ -86,7 +86,7 @@ def start_message_processing():
 def insert_data():
     start_message_processing()
     REQUEST_COUNT.inc()
-    return jsonify({'message': 'Inserted successfully.'})
+    return jsonify({'message': 'Inserted data successfully.'})
 
 app_dispatch = DispatcherMiddleware(app, {
     '/metrics': make_wsgi_app()
