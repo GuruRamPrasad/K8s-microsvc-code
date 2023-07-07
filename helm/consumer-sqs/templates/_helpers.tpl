@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "sqs-consumer.name" -}}
+{{- define "consumer-sqs.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "sqs-consumer.fullname" -}}
+{{- define "consumer-sqs.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "sqs-consumer.chart" -}}
+{{- define "consumer-sqs.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "sqs-consumer.labels" -}}
-helm.sh/chart: {{ include "sqs-consumer.chart" . }}
-{{ include "sqs-consumer.selectorLabels" . }}
+{{- define "consumer-sqs.labels" -}}
+helm.sh/chart: {{ include "consumer-sqs.chart" . }}
+{{ include "consumer-sqs.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "sqs-consumer.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "sqs-consumer.name" . }}
+{{- define "consumer-sqs.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "consumer-sqs.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "sqs-consumer.serviceAccountName" -}}
+{{- define "consumer-sqs.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "sqs-consumer.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "consumer-sqs.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

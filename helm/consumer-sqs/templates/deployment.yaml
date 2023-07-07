@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "sqs-consumer.fullname" . }}
+  name: {{ include "consumer-sqs.fullname" . }}
   labels:
-    {{- include "sqs-consumer.labels" . | nindent 4 }}
+    {{- include "consumer-sqs.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "sqs-consumer.selectorLabels" . | nindent 6 }}
+      {{- include "consumer-sqs.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "sqs-consumer.selectorLabels" . | nindent 8 }}
+        {{- include "consumer-sqs.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "sqs-consumer.serviceAccountName" . }}
+      serviceAccountName: {{ include "consumer-sqs.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -35,7 +35,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
           - configMapRef:
-              name: sqs-consumer
+              name: consumer-sqs          
           ports:
             - name: http
               containerPort: 5000
