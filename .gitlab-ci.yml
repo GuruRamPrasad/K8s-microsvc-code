@@ -160,7 +160,7 @@ end-helm-deploy:
     - kubectl get ns 
     - helm list
     # - helm upgrade --install admin-view ./helm/admin-view -n admin-view
-    - helm upgrade --install end-user-view ./helm/end-user-view -n 
+    - helm upgrade --install end-user-view ./helm/end-user-view -n end-user-view
     # - helm upgrade --install sqs-consumer ./helm/consumer-sqs -n consumer-sqs
   when: manual 
   tags: 
