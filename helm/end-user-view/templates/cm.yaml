@@ -1,0 +1,12 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "end-user-view.fullname" . }}
+  labels:
+    {{- include "end-user-view.labels" . | nindent 4 }}
+data:
+  DB_HOST: {{ .Values.host | default "database.cnlwcnnhcrrx.ap-south-1.rds.amazonaws.com" }}
+  DB_USER: {{ .Values.user | default "admin" }}
+  DB_PASSWORD: {{ .Values.password | default "admin123" }}
+  DB_NAME: {{ .Values.database | default "guru" }}
+  DB_TABLE: {{ .Values.table_name | default "class" }}
