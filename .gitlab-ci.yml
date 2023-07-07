@@ -120,6 +120,31 @@ sqs-consumer-docker-build:
 #     - k8s 
 
 
+# dev-helm-deploy:
+#   image: dtzar/helm-kubectl:3.9.3
+#   stage: dev-deploy
+#   script: 
+#   # <<: *kube_config_creds
+#     - kubectl version --short --client
+#     - helm version 
+#     - mkdir ~/.kube
+#     - echo "$kube_config" | base64 -d >~/.kube/config
+#     - apk add --no-cache curl jq python3 py3-pip
+#     - pip install awscli
+#     - kubectl get nodes 
+#     - kubectl get ns 
+#     - helm list
+#     # - helm upgrade --install admin-view ./helm/admin-view -n admin-view
+#     # - helm upgrade --install end-user-view ./helm/end-user-view -n enduser-view
+#     - helm upgrade --install sqs-consumer ./helm/consumer-sqs -n consumer-sqs
+#   when: manual 
+#   tags: 
+#     - k8s 
+
+
+
+
+
 dev-helm-deploy:
   image: dtzar/helm-kubectl:3.9.3
   stage: dev-deploy
@@ -135,8 +160,8 @@ dev-helm-deploy:
     - kubectl get ns 
     - helm list
     # - helm upgrade --install admin-view ./helm/admin-view -n admin-view
-    # - helm upgrade --install end-user-view ./helm/end-user-view -n enduser-view
-    - helm upgrade --install sqs-consumer ./helm/consumer-sqs -n consumer-sqs
+    - helm upgrade --install end-user-view ./helm/end-user-view -n end-user-view
+    # - helm upgrade --install sqs-consumer ./helm/consumer-sqs -n consumer-sqs
   when: manual 
   tags: 
     - k8s 
